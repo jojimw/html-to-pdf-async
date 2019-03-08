@@ -1,5 +1,5 @@
 const fs = require('fs');
-const logger = require('../logs/initLogger');
+const logger = require('../initLogger');
 
 let sourceVal, replaceString;
 

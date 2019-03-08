@@ -1,4 +1,4 @@
-const logger = require('./logs/initLogger');
+const logger = require('./initLogger');
 const templateRegistry = require('./utilities/templateRegistry');
 const replaceStrings = require('./replaceStrings/replaceString');
 

@@ -1,5 +1,5 @@
 const processorRegistry = require('../utilities/processorRegistry');
-const logger = require('../logs/initLogger');
+const logger = require('../initLogger');
 const regExp = require('../regExps/regExp');
 
 let currentTag, replaceData;

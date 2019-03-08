@@ -11,4 +11,13 @@ router.post('/render', (req, res) => {
     res.send(responseDataObject);
 });
 
+router.post('/render-pdf', (req, res) => {
+    dataObject = req.body;
+    responseDataObject = require('./index')(req.body)
+    console.log("recieved request")
+    // let responseTemplate = JSON.stringify(responseDataObject.templateData);
+    // responseDataObject.templateData = responseTemplate;
+    res.send(responseDataObject);
+})
+
 module.exports = router;

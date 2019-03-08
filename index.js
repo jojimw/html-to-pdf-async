@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const server = require('http').createServer(app);
 
 const router = require('./routes');
-const logger = require('./logs/initLogger');
+const logger = require('./initLogger');
 const generater = require('./generater');
 const { port, ip } = require('./env-config');
 

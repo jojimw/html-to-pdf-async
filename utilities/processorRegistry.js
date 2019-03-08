@@ -1,5 +1,5 @@
 const process = require('./process');
-const logger = require('../logs/initLogger');
+const logger = require('../initLogger');
 
 // Function to generate and call process based on tag
 const generateFunctionAndCall = (functionType, tag, dataObject) => {
