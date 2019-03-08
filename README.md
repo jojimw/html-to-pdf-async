@@ -1,2 +1,2 @@
 # html-to-pdf-async
-Convert HTML file to pdf using puppeteer
+Nodejs server to convert HTML file to PDF using PhantomJS
