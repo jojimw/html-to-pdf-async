@@ -3,16 +3,17 @@ const app = express();
 const bodyParser = require('body-parser');
 const server = require('http').createServer(app);
 
-const router = require('./routes/routes');
+const router = require('./routes');
 const logger = require('./logs/initLogger');
 const generater = require('./generater');
+const { port, ip } = require('./env-config');
 
 app.use(express.json());
 app.use(bodyParser.json());
 app.use('/', router);
 
-server.listen(3001,"0.0.0.0", () => {
-    console.log('App listening at port 3001....');
+server.listen(port, ip, () => {
+    console.log(`App listening at IP address ${ip} and port ${port}`);
 });
 
 // Call the respective functions in index.js

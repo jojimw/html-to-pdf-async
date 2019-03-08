@@ -32,13 +32,11 @@ const generateTemplate = (dataObject) => {
 }
 const appendToTemplate = (template, dataObject, appendData) => {
     try {
-
         logger.logger_info.info('[From index.js] appendToTemplate() executed');
         logger.logger_debug.debug('[From index.js] appendToTemplate() executed');        
         logger.logger_access.info('[From index.js] appendToTemplate() accessed');
         let createTemplateResponse = replaceStrings(template, dataObject, appendData);
         // return the template html string for the corresponding data object
-        
         return createTemplateResponse;
     }
     catch (err) {
