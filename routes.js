@@ -16,6 +16,7 @@ router.post('/render', (req, res) => {
 
 router.post('/download-pdf', (req, res) => {
     // dataObject = req.body;
+    console.log("recieved request")
     generater.renderPdfAndDownload(req.body)
         .then(result => {
             // logger.logDebug.debug('[from routes.js] post(/upload)\nResult:', result); 
@@ -29,6 +30,7 @@ router.post('/download-pdf', (req, res) => {
 
 router.post('/upload-pdf', (req, res) => {
     // dataObject = req.body;
+    console.log("recieved request")
     generater.renderPdfAndUpload(req.body)
         .then(result => {
             // logger.logDebug.debug('[from routes.js] post(/upload)\nResult:', result); 

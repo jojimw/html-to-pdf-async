@@ -1,6 +1,20 @@
-var fs = require('fs');
-var pdf = require('html-pdf');
-var options = {
+const pdf = require('html-pdf');
+const mime = require('mime');
+const AWS = require('aws-sdk');
+const uuidv4 = require('uuid/v4');
+
+const logger = require('./initLogger');
+const templateRegistry = require('./templateRegistry');
+const replaceStrings = require('./replaceString');
+const { awsAccessKeyId, awsSecretAccessKey } = require('../env-config')
+
+AWS.config.update({
+    accessKeyId: awsAccessKeyId,
+    secretAccessKey: awsSecretAccessKey
+});
+const s3 = new AWS.S3();
+
+const htmlOptions = {
     format: 'A4',
     border: {
         top: "0",  // default is 0, units: mm, cm, in, px
@@ -10,19 +24,15 @@ var options = {
     },
     orientation: 'portrait',
     header: {
-        height: '25mm'
+        height: '2cm'
     },
     footer: {
-        height: '25mm'
+        height: '2cm'
     },
     childProcessOptions: {
         detached: true
     }
 };
- 
-const logger = require('./initLogger');
-const templateRegistry = require('./templateRegistry');
-const replaceStrings = require('./replaceString');
 
 //get template from source 
 const getTemplate = (dataObject) => {
@@ -81,12 +91,12 @@ const renderPdfAndDownload = dataObject => {
             dataObject.templateData = appendToTemplate(dataObject.templateData, dataObject, dataObject.append);
         }
         return new Promise((resolve, reject) => {
-            pdf.create(dataObject.templateData, options).toFile('./out.pdf', (err, res) => {
+            pdf.create(dataObject.templateData, htmlOptions).toFile('./out.pdf', (err, res) => {
                 if(err) {
                     reject(err)
                 }
                 console.log('./out.pdf');
-                resolve({result: 'success'});
+                resolve({result: 'file downloaded ./out.pdf'});
             });
         });
     }
@@ -109,13 +119,36 @@ const renderPdfAndUpload = dataObject => {
             dataObject.templateData = appendToTemplate(dataObject.templateData, dataObject, dataObject.append);
         }
         return new Promise((resolve, reject) => {
-            pdf.create(dataObject.templateData, options).toStream(function(err, stream){
+            pdf.create(dataObject.templateData, htmlOptions).toStream((err, stream) => {
                 if(err) {
-                    reject(err)
+                    // logger.logError.error('[from utils/utils.js] addTextAndUpload() \nstream error:', err);
+                    reject(err);
+                    return;
                 }
-                console.log('./out.pdf');
-                resolve({result: 'success'});
-                stream.pipe(fs.createWriteStream('./foo.pdf'));
+                const outFile = `${uuidv4()}.pdf`;
+                const data = {
+                    Bucket: "sieve-sharable-poster-cdn/pdf",
+                    Key: outFile,
+                    Body: stream,
+                    ContentType: mime.getType(outFile)
+                };
+
+                // Upload to aws s3 bucket
+                s3.upload(data, (err, res) => {
+                    if (err) {
+                        // logger.logError.error('[from utils/utils.js] addTextAndUpload() \ns3 upload error:', err);
+                        reject(err);
+                        return;
+                    }
+                    
+                    // Upload success
+                    if (res) {
+                        // logger.logDebug.debug('[from utils/utils.js] addTextAndUpload() \ns3 upload response:', res);
+                        resolve({
+                            "uploadLink": res.Location,
+                        });
+                    }
+                });
             });
         });
     }
