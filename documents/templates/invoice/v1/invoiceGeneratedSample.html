@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Muli:400,600,700,800" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Muli', sans-serif;
+            margin: 0
+        }
+
+        @media screen {
+            .table-container tfoot td {
+                color: rgba(255, 255, 255, 0.01)
+            }
+            .table-container>thead td {
+                color: rgba(255, 255, 255, 0.01)
+            }
+            #footer {
+                color: rgba(255, 255, 255, 0.01);
+                font-size: 0.1rem
+            }
+            table.table-container {
+                width: 100%
+            }
+        }
+
+        #topContainer {
+            width: 100%;
+            height: 6rem
+        }
+
+        #issuedDate {
+            margin-top: 0.3rem;
+            margin-bottom: 0.3rem
+        }
+
+        #dueDate {
+            margin-top: 0.3rem
+        }
+
+        #invoiceNumber {
+            margin-bottom: 0.3rem
+        }
+
+        #topLeft {
+            color: #424753;
+            font-size: 1.7rem;
+            font-weight: 800;
+            float: left;
+            vertical-align: text-top
+        }
+
+        #topRight {
+            float: right;
+            font-size: 0.8rem
+        }
+
+        .topRightKey {
+            margin: 0;
+            color: hsl(0, 0%, 38%);
+            display: inline-block;
+            width: 8rem
+        }
+
+        .topRightVal {
+            float: right;
+            margin: 0;
+            color: #2d2d2d;
+            display: inline-block;
+            min-width: 7rem;
+            text-align: right
+        }
+
+        #fromContainer {
+            height: 6rem;
+            color: #2d2d2d;
+            margin: 1rem 0
+        }
+
+        #clientContainer {
+            height: 6rem;
+            color: #2d2d2d;
+            margin: 2rem 0 3rem 0
+        }
+
+        .leftHeading {
+            font-size: 0.8rem;
+            height: 100%;
+            width: 5rem;
+            float: left
+        }
+
+        .leftHeadingContent {
+            position: relative;
+            top: 1rem;
+            font-size: 0.7rem;
+            color: #616161
+        }
+
+        .rightDetails {
+            float: left;
+            padding-left: 2rem;
+            border-left: 0.07rem solid rgba(230, 230, 230, 0.9);
+            min-height: 5rem
+        }
+
+        .rightDetailsContent {
+            font-size: 0.9rem;
+            max-width: 16rem;
+            line-height: 1.6rem
+        }
+
+        .rightDetailsName {
+            font-weight: 700
+        }
+
+        table.tableBody {
+            width: 100%;
+            text-align: right;
+            font-weight: 600;
+            border-collapse: collapse;
+            margin: 0
+        }
+
+        table.tableBody td,
+        table.tableBody th {
+            padding-top: 0.9rem;
+            padding-bottom: 0.9rem;
+            padding-right: 1rem;
+            white-space: nowrap
+        }
+
+        table.tableBody td {
+            font-size: 0.8rem
+        }
+
+        table.tableBody td:nth-child(1),
+        table.tableBody th:nth-child(1) {
+            text-align: justify;
+            white-space: normal;
+            width: 18rem
+        }
+
+        table.tableBody td:last-child,
+        table.tableBody th:last-child {
+            padding-right: 0
+        }
+
+        table.tableBody tr {
+            color: #616161;
+            border-bottom: 0.07rem solid rgba(230, 230, 230, 0.2)
+        }
+
+        table.tableBody tr:last-child {
+            border-bottom: none
+        }
+
+        table.tableBody thead th {
+            font-size: 0.7rem;
+            border-bottom: none;
+            background: #FFF;
+            font-weight: 600;
+            color: rgba(97, 97, 97, 0.5);
+            text-align: right;
+            text-transform: uppercase
+        }
+
+        #totalsContainer {
+            height: 8.2rem;
+            width: 100%;
+            margin-top: 2rem
+        }
+
+        #subTotal {
+            color: #2d2d2d;
+            font-size: 0.8rem;
+            font-weight: 700;
+            height: 1rem
+        }
+
+        .leftTotals {
+            float: left
+        }
+
+        .rightTotals {
+            float: right;
+            width: 10rem;
+            text-align: right
+        }
+
+        #tax {
+            color: #616161;
+            font-size: 0.8rem;
+            font-weight: 700;
+            height: 1rem;
+            padding-top: 0.5rem
+        }
+
+        #discount {
+            color: #616161;
+            font-size: 0.8rem;
+            font-weight: 700;
+            height: 1rem;
+            padding-top: 0.5rem
+        }
+
+        #total {
+            color: #2d2d2d;
+            font-size: 1.2rem;
+            font-weight: 800;
+            position: relative;
+            height: 3rem;
+            top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 0.07rem solid rgba(230, 230, 230, 0.5)
+        }
+
+        #total .rightTotals {
+            border-bottom: 0 solid transparent;
+            width: 13rem
+        }
+
+        @page {
+            margin: 1cm 1.8cm 1.4cm 1.8cm
+        }
+
+        @media print {
+            .noBreak {
+                break-inside: avoid
+            }
+            .tableBody thead {
+                display: table-row-group
+            }
+            table.table-container {
+                width: 100%
+            }
+            .table-container tfoot {
+                display: table-footer-group
+            }
+            .table-container>thead {
+                display: table-header-group
+            }
+            .table-container tfoot td {
+                color: rgba(255, 255, 255, 0.01)
+            }
+            .table-container>thead td {
+                color: rgba(255, 255, 255, 0.01)
+            }
+            #footer {
+                position: fixed;
+                bottom: 0;
+                left: 15rem;
+                color: rgba(230, 230, 230, 0.5);
+                font-size: 0.8rem
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <table class="table-container">
+        <thead>
+            <tr>
+                <td>
+                    <div id="header"> Invisible Header Content</div>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <div id="topContainer">
+                        <div id="topLeft">INVOICE</div>
+                        <div id="topRight">
+                            <div id="invoiceNumber">
+                                <div class="topRightKey">INVOICE NUMBER</div>
+                                <div class="topRightVal">#283723874</div>
+                            </div>
+                            <div id="issuedDate">
+                                <div class="topRightKey">ISSUED DATE</div>
+                                <div class="topRightVal">April 24, 2018</div>
+                            </div>
+                            <div id="dueDate">
+                                <div class="topRightKey">DUE DATE</div>
+                                <div class="topRightVal">April 30, 2018</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="fromContainer">
+                        <div class="leftHeading">
+                            <div class="leftHeadingContent">FROM</div>
+                        </div>
+                        <div class="rightDetails">
+                            <div class="rightDetailsContent rightDetailsName">Joji Mathew</div>
+                            <div class="rightDetailsContent">Timshel Technologies Private Limited, NASSCOM, Infopark, Kakkanad, Kochi, Kerala, India</div>
+                        </div>
+                    </div>
+                    <div id="clientContainer">
+                        <div class="leftHeading">
+                            <div class="leftHeadingContent">CLIENT</div>
+                        </div>
+                        <div class="rightDetails">
+                            <div class="rightDetailsContent rightDetailsName">Mark Zuckerberg</div>
+                            <div class="rightDetailsContent">Facebook, Inc.</div>
+                        </div>
+                    </div>
+                    <table class="tableBody">
+                        <thead>
+                            <tr>
+                                <th>services</th>
+                                <th>unit price</th>
+                                <th>qty</th>
+                                <th>total</th>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td>UI Design</td>
+                            <td>$20</td>
+                            <td>3</td>
+                            <td>$60</td>
+                        </tr>
+                        <tr>
+                            <td>UI Design</td>
+                            <td>$100</td>
+                            <td>12</td>
+                            <td>$1200</td>
+                        </tr>
+                        <tr>
+                            <td>UI Design for the bettement of the future of Facebook</td>
+                            <td>$1100</td>
+                            <td>6</td>
+                            <td>$6600</td>
+                        </tr>
+                    </table>
+                    <div id="totalsContainer">
+                        <div class="noBreak">
+                            <div id="subTotal">
+                                <div class="leftTotals">SUBTOTAL</div>
+                                <div class="rightTotals">$7860</div>
+                            </div>
+                            <div id="tax">
+                                <div class="leftTotals">TAX (10%)</div>
+                                <div class="rightTotals">$786</div>
+                            </div>
+                            <div id="discount">
+                                <div class="leftTotals">DISCOUNT</div>
+                                <div class="rightTotals">-$86</div>
+                            </div>
+                        </div>
+                        <div id="total">
+                            <div class="leftTotals">TOTAL</div>
+                            <div class="rightTotals">$8560</div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>Invisible Footer Content</td>
+            </tr>
+        </tfoot>
+    </table>
+    <div id="footer">Invoice generated by Sieve, Inc.</div>
+</body>
+
+</html>
