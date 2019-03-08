@@ -1,5 +1,5 @@
 const process = require('./process');
-const logger = require('../initLogger');
+const logger = require('./initLogger');
 
 // Function to fetch template based on type and version
 const fetchTemplate = (dataObject) => {

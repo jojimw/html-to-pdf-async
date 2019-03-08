@@ -1,5 +1,4 @@
-const dotenv = require('dotenv');
-dotenv.config();
+require('dotenv').config();
 const envConfig = () => {
     switch(process.env.NODE_ENV) {
         case 'development':
@@ -11,6 +10,11 @@ const envConfig = () => {
             return {
                 port: process.env.PROD_PORT,
                 ip: process.env.PROD_IP_ADDRESS
+            }
+        default:
+            return {
+                port: process.env.DEV_PORT,
+                ip: process.env.DEV_IP_ADDRESS
             }
     }
 }

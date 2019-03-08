@@ -1,6 +1,6 @@
-const processorRegistry = require('../utilities/processorRegistry');
-const logger = require('../initLogger');
-const regExp = require('../regExps/regExp');
+const processorRegistry = require('./processorRegistry');
+const logger = require('./initLogger');
+const regExp = require('./regExp');
 
 let currentTag, replaceData;
 

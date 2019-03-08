@@ -4,8 +4,8 @@ const bodyParser = require('body-parser');
 const server = require('http').createServer(app);
 
 const router = require('./routes');
-const logger = require('./initLogger');
-const generater = require('./generater');
+const logger = require('./utilities/initLogger');
+const generater = require('./utilities/generater');
 const { port, ip } = require('./env-config');
 
 app.use(express.json());

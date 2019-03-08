@@ -1,6 +1,6 @@
 const logger = require('./initLogger');
-const templateRegistry = require('./utilities/templateRegistry');
-const replaceStrings = require('./replaceStrings/replaceString');
+const templateRegistry = require('./templateRegistry');
+const replaceStrings = require('./replaceString');
 
 //get template from source 
 const getTemplate = (dataObject) => {
