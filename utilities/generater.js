@@ -6,7 +6,7 @@ const uuidv4 = require('uuid/v4');
 const logger = require('./initLogger');
 const templateRegistry = require('./templateRegistry');
 const replaceStrings = require('./replaceString');
-const { awsAccessKeyId, awsSecretAccessKey } = require('../env-config')
+const { awsAccessKeyId, awsSecretAccessKey, awsBucketUrl } = require('../env-config')
 
 AWS.config.update({
     accessKeyId: awsAccessKeyId,
@@ -14,7 +14,7 @@ AWS.config.update({
 });
 const s3 = new AWS.S3();
 
-const htmlOptions = {
+const htmlPdfOptions = {
     format: 'A4',
     border: {
         top: "0",  // default is 0, units: mm, cm, in, px
@@ -31,7 +31,8 @@ const htmlOptions = {
     },
     childProcessOptions: {
         detached: true
-    }
+    },
+    type: "pdf"
 };
 
 //get template from source 
@@ -78,6 +79,8 @@ const appendToTemplate = (template, dataObject, appendData) => {
     }
 };
 
+const generateOutFileName = () => `${uuidv4()}.pdf`;
+
 const renderPdfAndDownload = dataObject => {
     try {
         logger.logger_debug.debug('[From generater.js] renderPdfAndDownload executed');
@@ -90,13 +93,16 @@ const renderPdfAndDownload = dataObject => {
         if (dataObject.config.append) {
             dataObject.templateData = appendToTemplate(dataObject.templateData, dataObject, dataObject.append);
         }
+
+        // generate pdf and download
         return new Promise((resolve, reject) => {
-            pdf.create(dataObject.templateData, htmlOptions).toFile('./out.pdf', (err, res) => {
+            const outFile = generateOutFileName();
+            pdf.create(dataObject.templateData, htmlPdfOptions).toFile(`./${outFile}`, (err, res) => {
                 if(err) {
+                    logger.logger_error.error('[From generater.js] renderPdfAndDownload() - \nfile error:', err, '\n');
                     reject(err)
                 }
-                console.log('./out.pdf');
-                resolve({result: 'file downloaded ./out.pdf'});
+                resolve({result: `file downloaded ${outFile}`});
             });
         });
     }
@@ -118,16 +124,18 @@ const renderPdfAndUpload = dataObject => {
         if (dataObject.config.append) {
             dataObject.templateData = appendToTemplate(dataObject.templateData, dataObject, dataObject.append);
         }
+
+        // generate pdf and upload to s3
         return new Promise((resolve, reject) => {
-            pdf.create(dataObject.templateData, htmlOptions).toStream((err, stream) => {
+            pdf.create(dataObject.templateData, htmlPdfOptions).toStream((err, stream) => {
                 if(err) {
-                    // logger.logError.error('[from utils/utils.js] addTextAndUpload() \nstream error:', err);
+                    logger.logger_error.error('[from generater.js] renderPdfAndUpload() \nstream error:', err);
                     reject(err);
                     return;
                 }
-                const outFile = `${uuidv4()}.pdf`;
+                const outFile = generateOutFileName();
                 const data = {
-                    Bucket: "sieve-sharable-poster-cdn/pdf",
+                    Bucket: awsBucketUrl,
                     Key: outFile,
                     Body: stream,
                     ContentType: mime.getType(outFile)
@@ -136,14 +144,14 @@ const renderPdfAndUpload = dataObject => {
                 // Upload to aws s3 bucket
                 s3.upload(data, (err, res) => {
                     if (err) {
-                        // logger.logError.error('[from utils/utils.js] addTextAndUpload() \ns3 upload error:', err);
+                        logger.logger_error.error('[from generater.js] renderPdfAndUpload() \ns3 upload error:', err);
                         reject(err);
                         return;
                     }
                     
                     // Upload success
                     if (res) {
-                        // logger.logDebug.debug('[from utils/utils.js] addTextAndUpload() \ns3 upload response:', res);
+                        logger.logger_debug.debug('[from generater.js] renderPdfAndUpload() \ns3 upload response:', res);
                         resolve({
                             "uploadLink": res.Location,
                         });

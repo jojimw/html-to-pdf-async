@@ -8,36 +8,32 @@ const logger = require('./utilities/initLogger');
 router.post('/render', (req, res) => {
     dataObject = req.body;
     responseDataObject = require('./index')(req.body)
-    console.log("recieved request")
-    // let responseTemplate = JSON.stringify(responseDataObject.templateData);
-    // responseDataObject.templateData = responseTemplate;
     res.send(responseDataObject);
 });
 
 router.post('/download-pdf', (req, res) => {
-    // dataObject = req.body;
-    console.log("recieved request")
     generater.renderPdfAndDownload(req.body)
         .then(result => {
-            // logger.logDebug.debug('[from routes.js] post(/upload)\nResult:', result); 
-            res.send(result)
+            logger.logger_info.info('[from routes.js] post(/download-pdf)\nResult:', result);
+            logger.logger_debug.debug('[from routes.js] post(/download-pdf)\nResult:', result); 
+            res.send(result);
         })
         .catch(error => {
             // logger.logError.error('[from routes.js] post(/upload)\n', error);
+            logger.logger_error.error('[from routes.js] post(/download-pdf)\n', error, '\n');
             res.status(500).send(error);
         })
 })
 
 router.post('/upload-pdf', (req, res) => {
-    // dataObject = req.body;
-    console.log("recieved request")
     generater.renderPdfAndUpload(req.body)
         .then(result => {
-            // logger.logDebug.debug('[from routes.js] post(/upload)\nResult:', result); 
-            res.send(result)
+            logger.logger_info.info('[from routes.js] post(/upload-pdf)\nResult:', result);
+            logger.logger_debug.debug('[from routes.js] post(/upload-pdf)\nResult:', result);
+            res.send(result);
         })
         .catch(error => {
-            // logger.logError.error('[from routes.js] post(/upload)\n', error);
+            logger.logger_error.error('[from routes.js] post(/upload-pdf)\n', error, '\n');
             res.status(500).send(error);
         })
 })

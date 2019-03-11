@@ -21,8 +21,7 @@ const generateTable = (fields, data) => {
             }
             subHtml = subHtml + '</tr>';
             return subHtml;
-        }).join('');
-        html += '</table>';
+        }).join('') + '</table>';
         return (html);
     }
     catch (err) {
