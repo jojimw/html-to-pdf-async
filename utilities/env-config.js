@@ -1,4 +1,5 @@
 require('dotenv').config();
+
 let defaultConfig = {
     port: process.env.DEV_PORT,
     ip: process.env.DEV_IP_ADDRESS,
@@ -6,6 +7,7 @@ let defaultConfig = {
     awsAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     awsBucketUrl: process.env.AWS_BUCKET_URL
 }
+
 const envConfig = () => {
     switch(process.env.NODE_ENV) {
         case 'development':
@@ -20,4 +22,5 @@ const envConfig = () => {
             return defaultConfig
     }
 }
+
 module.exports = envConfig();
