@@ -6,7 +6,7 @@ let sourceVal, replaceString;
 // Funtion to generate table when coming across table tag
 const generateTable = (fields, data) => {
     try {
-        logger.logger_debug.debug('[From utilities/process.js] generateTable() - fields: ', fields);
+        // logger.logger_debug.debug('[From utilities/process.js] generateTable() - fields: ', fields);
         let html = '<table class="tableBody">';
         html = html + '<thead><tr>';
         fields.forEach(field => {
@@ -25,14 +25,14 @@ const generateTable = (fields, data) => {
         return (html);
     }
     catch (err) {
-        logger.logger_error.error('[From utilities/process.js] generateTable() -', err, '\n');
+        // logger.logger_error.error('[From utilities/process.js] generateTable() -', err, '\n');
         throw err;
     }
 };
 
 const generateIterable = (iterableData) => {
     try {
-        logger.logger_debug.debug('[From utilities/process.js] generateIterable() - iterableData: ', iterableData);
+        // logger.logger_debug.debug('[From utilities/process.js] generateIterable() - iterableData: ', iterableData);
         let html = '<ol>';
         iterableData.map((iterableDataItem) => {
             html = html + `<li>${iterableDataItem}</li>`;
@@ -41,7 +41,7 @@ const generateIterable = (iterableData) => {
         return (html);
     }
     catch (err) {
-        logger.logger_error.error('[From utilities/process.js] generateiterable() -', err, '\n');
+        // logger.logger_error.error('[From utilities/process.js] generateiterable() -', err, '\n');
         throw err;
     }
 }
@@ -49,7 +49,7 @@ const generateIterable = (iterableData) => {
 // Function to process text tag
 const process_text = (tag, dataObject) => {
     try {
-        logger.logger_debug.debug('[From utilities/process.js] process_text() - replaceTag: ', tag[0]);
+        // logger.logger_debug.debug('[From utilities/process.js] process_text() - replaceTag: ', tag[0]);
         if (tag[3]) {
             replaceString = new RegExp(`${tag[0]}`, 'g');
             replaceTagData = dataObject.substitutionData.filter(subData => {
@@ -80,7 +80,7 @@ const process_text = (tag, dataObject) => {
         }
     }
     catch (err) {
-        logger.logger_error.error('[From utilities/process.js] process_text() -', err, '\n');
+        // logger.logger_error.error('[From utilities/process.js] process_text() -', err, '\n');
         throw err;
     }
 };
@@ -88,7 +88,7 @@ const process_text = (tag, dataObject) => {
 // Function to process table tag
 const process_table = (tag, dataObject) => {
     try {
-        logger.logger_debug.debug('[From utilities/process.js] process_table() - replaceTag: ', tag[0]);
+        // logger.logger_debug.debug('[From utilities/process.js] process_table() - replaceTag: ', tag[0]);
         replaceString = new RegExp(`${tag[0]}`, 'g');
         let replaceTagData = dataObject.substitutionData.filter(subData => {
             return '{{' + subData.type + ' ' + subData.variable + '}}' === tag[0]
@@ -102,14 +102,14 @@ const process_table = (tag, dataObject) => {
         return [replaceString, sourceVal];
     }
     catch (err) {
-        logger.logger_error.error('[From utilities/process.js] process_table() -', err, '\n');
+        // logger.logger_error.error('[From utilities/process.js] process_table() -', err, '\n');
         throw err;
     }
 };
 
 const process_tableBody = (tag, dataObject) => {
     try {
-        logger.logger_debug.debug('[From utilities/process.js] process_table() - replaceTag: ', tag[0]);
+        // logger.logger_debug.debug('[From utilities/process.js] process_table() - replaceTag: ', tag[0]);
         replaceString = new RegExp(`${tag[0]}`, 'g');
         let tableTagDetails = dataObject.substitutionData.filter(subData => {
             return '{{' + subData.type + ' ' + subData.variable + '}}' === tag[0]
@@ -124,14 +124,14 @@ const process_tableBody = (tag, dataObject) => {
         return [replaceString, sourceVal];
     }
     catch (err) {
-        logger.logger_error.error('[From utilities/process.js] process_tableBody() -', err, '\n');
+        // logger.logger_error.error('[From utilities/process.js] process_tableBody() -', err, '\n');
         throw err;
     }
 };
 
 const process_iterable = (tag, dataObject) => {
     try {
-        logger.logger_debug.debug('[From utilities/process.js] process_iterable() - replaceTag: ', tag[0]);
+        // logger.logger_debug.debug('[From utilities/process.js] process_iterable() - replaceTag: ', tag[0]);
         if (tag[3]) {
             replaceString = new RegExp(`${tag[0]}`, 'g');
             let iterableTagDetails = dataObject.substitutionData.filter(subData => {
@@ -161,7 +161,7 @@ const process_iterable = (tag, dataObject) => {
         }
     }
     catch (err) {
-        logger.logger_error.error('[From utilities/process.js] process_iterable() -', err, '\n');
+        // logger.logger_error.error('[From utilities/process.js] process_iterable() -', err, '\n');
         throw err;
     }
 };
@@ -169,7 +169,7 @@ const process_iterable = (tag, dataObject) => {
 // function to append the data in place of the appendData
 const process_append = (appendData) => {
     try {
-        logger.logger_debug.debug('[From utilities/process.js] process_append() executed');
+        // logger.logger_debug.debug('[From utilities/process.js] process_append() executed');
         if (appendData) {
             let appendHtml = '';
             appendData.map(appendDataItem => {
@@ -184,7 +184,7 @@ const process_append = (appendData) => {
         }
     }
     catch (err) {
-        logger.logger_error.error('[From utilities/process.js] process_append() -', err, '\n');
+        // logger.logger_error.error('[From utilities/process.js] process_append() -', err, '\n');
         throw err;
     }
 }
@@ -193,11 +193,11 @@ const process_append = (appendData) => {
 const process_template = (dataObject) => {
     try {
         let dir = `./documents/${dataObject.templateId.split('.').join('/')}.html`;
-        logger.logger_debug.debug('[From utilities/process.js] process_template() - dir:', dir);
+        logger('debug', '[From utilities/process.js] process_template() - dir:' + dir);
         return fs.readFileSync(dir, 'utf8');
     }
     catch (err) {
-        logger.logger_error.error('[From utilities/process.js] process_template() -', err, '\n');
+        logger('error', '[From utilities/process.js] process_template() -' + err + '\n');
         throw err;
     }
 }

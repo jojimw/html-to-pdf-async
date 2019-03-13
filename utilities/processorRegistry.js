@@ -5,22 +5,22 @@ const logger = require('./initLogger');
 const generateFunctionAndCall = (functionType, tag, dataObject) => {
     try {
         let functionName = 'process_' + functionType;
-        logger.logger_debug.debug('[From utilities/processRegistry.js] generateFunctionAndCall() - functionType:', functionType, '\nfunctionName:', functionName); 
+        logger('debug', '[From utilities/processRegistry.js] generateFunctionAndCall() - functionType:' + functionType + '\nfunctionName:' + functionName); 
         return process[functionName](tag, dataObject);
     }
     catch(err) {
-        logger.logger_error.error('[From utilities/processorRegistry.js] generateFunctionAndCall() -', err, '\n');
+        logger('error', '[From utilities/processorRegistry.js] generateFunctionAndCall() -' + err + '\n');
         throw err;
     }
 };
 
 const dataAppender = (appendData) => {
     try {
-        logger.logger_debug.debug('[From utilities/processRegistry.js] dataAppender() executed');    
+        logger('debug', '[From utilities/processRegistry.js] dataAppender() executed');    
         return process.process_append(appendData);
     }
     catch(err) {
-        logger.logger_error.error('[From utilities/processorRegistry.js] dataAppender() -', err, '\n');
+        logger('error', '[From utilities/processorRegistry.js] dataAppender() -' + err + '\n');
         throw err;
     }
 };

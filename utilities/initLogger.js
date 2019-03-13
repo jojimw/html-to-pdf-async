@@ -9,11 +9,28 @@ log4js.configure({
 });
 
 // Initialize the loggers for use
-const loggerObject = {
-    logger_info: log4js.getLogger('info'),
-    logger_error: log4js.getLogger('error'),
-    logger_debug: log4js.getLogger('debug'),
-    logger_access: log4js.getLogger('access')
-};
+const logger = (type, message) => {
+    switch (type) {
+        case 'info': {
+            log4js.getLogger('info').info(message)
+            break;
+        }
+        case 'error': {
+            log4js.getLogger('error').error(message)
+            break;
+        }
+        case 'debug': {
+            log4js.getLogger('debug').debug(message)
+            break;
+        }
+        case 'access': {
+            log4js.getLogger('access').info(message)
+            break;
+        }
+        default: {
+            break;
+        }
+    }
+}
     
-module.exports = loggerObject;
+module.exports = logger;
