@@ -6,7 +6,7 @@ const server = require('http').createServer(app);
 const router = require('./routes');
 const logger = require('./utilities/initLogger');
 const { generateTemplate, appendToTemplate } = require('./utilities/generater');
-const { port, ip } = require('./env-config');
+const { port, ip } = require('./utilities/env-config');
 
 app.use(express.json());
 app.use(bodyParser.json());

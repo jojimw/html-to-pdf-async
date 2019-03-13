@@ -6,7 +6,7 @@ const uuidv4 = require('uuid/v4');
 const logger = require('./initLogger');
 const { fetchTemplate } = require('./templateRegistry');
 const replaceStrings = require('./replaceString');
-const { awsAccessKeyId, awsSecretAccessKey, awsBucketUrl } = require('../env-config')
+const { awsAccessKeyId, awsSecretAccessKey, awsBucketUrl } = require('./env-config')
 
 AWS.config.update({
     accessKeyId: awsAccessKeyId,
